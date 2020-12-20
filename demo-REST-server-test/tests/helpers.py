@@ -1,9 +1,14 @@
 import requests
+import os
+import pytest
 
 
-def is_success(response: requests.Response):
-    """Return true if the response has a success HTTP status code"""
-    return 200 <= response.status_code < 300
+@pytest.fixture(scope='function')
+def server():
+    """Return a server and clean it when the test is done"""
+    s = Server(os.getenv("SERVER_URL"))
+    yield s
+    s.clean()
 
 
 class Server:
@@ -22,9 +27,9 @@ class Server:
         """Perform a get request to the server and return the response"""
         return requests.get(self.base_uri + path, **kwargs)
 
-    def delete(self, path):
+    def delete(self, path, **kwargs):
         """Perform a delete request to the server and return the response"""
-        response = requests.delete(self.base_uri + path)
+        response = requests.delete(self.base_uri + path, **kwargs)
         try:
             del self._data[path]
         except KeyError:
