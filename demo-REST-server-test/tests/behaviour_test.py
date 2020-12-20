@@ -94,11 +94,13 @@ def test_delete_unknown_resource_returns_not_found(server):
 
 # We assume that we only expect 200 as response code and
 # not 202 nor 204 which are also correct
-def test_delete_existing_resource_returns_ok(server):
+def test_delete_existing_resource_returns_ok_and_delete(server):
     path = "/hello/world"
     data = {"answer": 42}
     server.put(path, data)
     assert server.delete(path).status_code == 200
+    # Make sure the resource is deleted
+    assert server.get(path).status_code == 404
 
 
 def test_delete_child_resource_returns_not_found_and_the_path_to_the_parent(server):
