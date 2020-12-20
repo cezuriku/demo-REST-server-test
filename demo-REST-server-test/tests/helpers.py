@@ -18,9 +18,9 @@ class Server:
             self._data[path] = data
         return response
 
-    def get(self, path):
+    def get(self, path, **kwargs):
         """Perform a get request to the server and return the response"""
-        return requests.get(self.base_uri + path)
+        return requests.get(self.base_uri + path, **kwargs)
 
     def delete(self, path):
         """Perform a delete request to the server and return the response"""
