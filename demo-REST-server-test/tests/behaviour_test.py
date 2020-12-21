@@ -5,6 +5,11 @@ from helpers import Server, server
 # https://hub.docker.com/r/jacopofar/demo-rest-server
 # Delete will return 200 on success (not 202 nor 204)
 # Put will return 200 on update (not 204)
+# Path and sub-path are considered different for PUT and DELETE
+#   Delete will not delete all its sub-path
+#     Example: DELETE on /users will not delete /users/1
+#   Put will not update the child resources
+#     Example: PUT on /users will have no effect on /users/1
 
 
 def test_get_new_resource_returns_not_found(server):
